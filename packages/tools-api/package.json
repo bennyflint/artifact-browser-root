@@ -1,0 +1,32 @@
+{
+  "name": "@bflint/tools-api",
+  "version": "0.1.0",
+  "license": "UNLICENSED",
+  "description": "API layer",
+  "scripts": {
+    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose --noClean",
+    "build": "tsdx build --tsconfig tsconfig.build.json",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublish": "npm run build"
+  },
+  "main": "dist/index.js",
+  "module": "dist/tools-api.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "dependencies": {
+    "tslib": "^2",
+    "cross-fetch": "^3.1.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "eslint": "^7.31.0",
+    "tsdx": "^0.14.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

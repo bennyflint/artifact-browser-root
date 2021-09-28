@@ -17,6 +17,8 @@ const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
+const ArtifactBrowser = Loadable(lazy(() => import('artifact-browser/view/ArtifactBrowser'))); 
+
 // ===========================|| MAIN ROUTING ||=========================== //
 
 const MainRoutes = {
@@ -51,10 +53,13 @@ const MainRoutes = {
             path: '/icons/material-icons',
             element: <UtilsMaterialIcons />
         },
-
         {
             path: '/sample-page',
             element: <SamplePage />
+        },
+        {
+            path: '/artifact-browser',
+            element: <ArtifactBrowser />
         }
     ]
 };

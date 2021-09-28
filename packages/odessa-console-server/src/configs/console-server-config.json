@@ -1,0 +1,4 @@
+{
+    "relativePathToCliWindows": "../../mdk/mdk-cli/.venv/Scripts/mdk",
+    "relativePathToCliUnix": "../../mdk/mdk-cli/.venv/bin/mdk"
+}

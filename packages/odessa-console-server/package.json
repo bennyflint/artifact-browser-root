@@ -1,0 +1,61 @@
+{
+  "name": "@bflint/tools-server",
+  "private": "true",
+  "description": "The backend server which interfaces with the local environment or remote servers",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production ts-node --transpile-only src/server.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --watch src --delay 1 --legacy-watch --exec 'ts-node' src/server.ts",
+    "test": "jest --forceExit --detectOpenHandles",
+    "test:watch": "jest --watch --forceExit --detectOpenHandles",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}' --quiet --fix"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "class-transformer": "^0.3.1",
+    "class-validator": "^0.12.2",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
+    "envalid": "^7.0.0",
+    "express": "^4.17.1",
+    "helmet": "^4.1.1",
+    "hpp": "^0.2.3",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "runscript": "^1.5.0",
+    "swagger-jsdoc": "^4.2.0",
+    "swagger-ui-express": "^4.1.4",
+    "ts-node": "^10.2.1"
+  },
+  "devDependencies": {
+    "@bflint/tools-api": "^0.1.0",
+    "@types/bcrypt": "^3.0.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/cors": "^2.8.7",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.8",
+    "@types/helmet": "0.0.48",
+    "@types/hpp": "^0.2.1",
+    "@types/jest": "^26.0.20",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/morgan": "^1.9.1",
+    "@types/node": "^14.11.5",
+    "@types/supertest": "^2.0.10",
+    "@types/swagger-jsdoc": "^3.0.2",
+    "@types/swagger-ui-express": "^4.1.2",
+    "@typescript-eslint/eslint-plugin": "^4.4.0",
+    "@typescript-eslint/parser": "^4.4.0",
+    "eslint": "^7.31.0",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
+    "supertest": "^5.0.0",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.4.3"
+  },
+  "workspaces": {
+    "nohoist": ["ts-jest", "ts-jest/**"]
+  }
+}

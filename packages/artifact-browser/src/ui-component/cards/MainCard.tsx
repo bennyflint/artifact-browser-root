@@ -12,25 +12,38 @@ const headerSX = {
 
 // ===========================|| CUSTOM MAIN CARD ||=========================== //
 
-const MainCard = React.forwardRef(
-    (
-        {
-            border = true,
-            boxShadow,
-            children,
-            content = true,
-            contentClass,
-            contentSX,
-            darkTitle,
-            secondary,
-            shadow,
-            sx = {},
-            title,
-            ...others
-        },
-        ref
-    ) => {
-        const theme = useTheme();
+interface MainCardProps {
+    border?: boolean,
+    boxShadow?: boolean,
+    children: React.ReactNode,
+    content?: boolean,
+    contentClass?: string,
+    contentSX?: object,
+    darkTitle?: boolean,
+    secondary?: React.ReactNode | object,
+    shadow?: string,
+    sx?: object,
+    title?: string,
+}
+
+const MainCard = (
+    {
+        border = true,
+        boxShadow = false,
+        children,
+        content = true,
+        contentClass = '',
+        contentSX ={},
+        darkTitle = false,
+        secondary = null,
+        shadow = '',
+        sx = {},
+        title = '',
+        ...others
+    }: MainCardProps,
+    ref: React.ForwardedRef<HTMLDivElement>
+    ): React.ReactElement => {
+        const theme = useTheme<any>();
 
         return (
             <Card
@@ -64,20 +77,5 @@ const MainCard = React.forwardRef(
             </Card>
         );
     }
-);
 
-MainCard.propTypes = {
-    border: PropTypes.bool,
-    boxShadow: PropTypes.bool,
-    children: PropTypes.node,
-    content: PropTypes.bool,
-    contentClass: PropTypes.string,
-    contentSX: PropTypes.object,
-    darkTitle: PropTypes.bool,
-    secondary: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
-    shadow: PropTypes.string,
-    sx: PropTypes.object,
-    title: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object])
-};
-
-export default MainCard;
+export default React.forwardRef(MainCard);
