@@ -16,8 +16,8 @@ export class ArtifactService {
 
     fetchArtifacts(): ArtifactSummary[] {
         return [
-            this.createData('TheGame.1.0.4.1200.debug', '2021-09-16T14:04', ['Broken']),
-            this.createData('TheGame.1.0.4.1200.release', '2021-09-16T14:03', ['Broken']),
+            this.createData('rad-client.1.0.4.1200.debug', '2021-09-16T14:04', ['Broken']),
+            this.createData('rad-client.1.0.4.1200.release', '2021-09-16T14:03', ['Broken']),
         ]
     }
 
