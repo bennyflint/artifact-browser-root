@@ -47,7 +47,7 @@ Note: For simplicity purpose, I removed all the classnames, you can check the re
           <Box component="span">
             {text || placeholder}
           </Box>
-          <EditIcon />
+          <EditIcon fontSize="small" />
         </div>
       )}
     </div>
