@@ -2,39 +2,9 @@ import * as React from 'react';
 import { Box, Chip, Collapse, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextareaAutosize, TextField } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import AnimationIcon from '@mui/icons-material/Animation';
 import { ArtifactSummary } from 'artifact-browser/services/ArtifactService';
 import { Editable } from 'ui-component/Editable';
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-  price: number,
-) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: '2020-01-05',
-        customerId: '11091700',
-        amount: 3,
-      },
-      {
-        date: '2020-01-02',
-        customerId: 'Anonymous',
-        amount: 1,
-      },
-    ],
-  };
-}
-
 
 // Use a type alias here in case we ever want these types to diverge.
 type RowProps = ArtifactSummary
@@ -63,15 +33,16 @@ function Row(props: { row: RowProps } ) {
         <TableCell component="th" scope="row">
           {row.displayName}
         </TableCell>
-        <TableCell align="right">{row.created}</TableCell>
-        <TableCell align="right">
-        <Stack justifyContent="flex-end" direction="row" spacing={1}>{row.labels?.map((label) => {
-          return (
-              <Chip label={label} size="small" variant="outlined"/>
-          );})
-        }
-        </Stack>
+        <TableCell>{row.created}</TableCell>
+        <TableCell>
+          <Stack justifyContent="flex-start" direction="row" spacing={1}>{row.labels?.map((label) => {
+            return (
+                <Chip label={label} size="small" variant="outlined"/>
+            );})
+          }
+          </Stack>
         </TableCell>
+        <TableCell align="center"><AnimationIcon /></TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -156,8 +127,9 @@ export const ArtifactTable = (
             <TableRow>
               <TableCell />
               <TableCell>Artifact</TableCell>
-              <TableCell align="right">Created</TableCell>
-              <TableCell align="right">Labels</TableCell>
+              <TableCell>Created</TableCell>
+              <TableCell>Labels</TableCell>
+              <TableCell align="right">Launchers</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
