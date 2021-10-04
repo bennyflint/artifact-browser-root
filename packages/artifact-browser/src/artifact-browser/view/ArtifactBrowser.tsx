@@ -14,10 +14,10 @@ const ArtifactBrowser = () => {
     const artifactService = new ArtifactService();
     const [artifacts, setArtifacts] = React.useState<ArtifactSummary[]>([]);
 
+    // Fetch artifacts from the file system using local server.
     useEffect(() => {
         artifactService.fetchArtifacts()
         .then(data => {
-            console.log("HERE11 " + JSON.stringify(data))
             setArtifacts(data)
         })
     }, [])
