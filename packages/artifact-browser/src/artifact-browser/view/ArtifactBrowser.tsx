@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // material-ui
 import { Typography } from '@mui/material';
@@ -6,21 +6,25 @@ import { Typography } from '@mui/material';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { ArtifactTable } from 'artifact-browser/view/ArtifactTable'
-import { ArtifactService } from 'artifact-browser/services/ArtifactService';
+import { ArtifactService, ArtifactSummary } from 'artifact-browser/services/ArtifactService';
 
 //= =============================|| SAMPLE PAGE ||==============================//
 
 const ArtifactBrowser = () => {
     const artifactService = new ArtifactService();
+    const [artifacts, setArtifacts] = React.useState<ArtifactSummary[]>([]);
 
-    const [artifacts, setArtifacts] = React.useState(() => {
-        return artifactService.fetchArtifacts()
-    });
-
+    useEffect(() => {
+        artifactService.fetchArtifacts()
+        .then(data => {
+            console.log("HERE11 " + JSON.stringify(data))
+            setArtifacts(data)
+        })
+    }, [])
     return(
         <MainCard title="Artifact Browser">
-            <Typography variant="body2">
-                <ArtifactTable rows={artifacts} />
+            <Typography component={'span'} variant="body2">
+                <ArtifactTable rows={artifacts}/>
             </Typography>
         </MainCard>
     )

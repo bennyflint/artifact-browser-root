@@ -1,9 +1,13 @@
 import { ApiRequest } from './interfaces';
 
 export class CliApiRequest implements ApiRequest {
+  CLI_API_URI = '/api/cli';
+
+  path: string;
   args: string[];
 
   constructor(args: string[]) {
+    this.path = this.CLI_API_URI
     this.args = args;
   }
 

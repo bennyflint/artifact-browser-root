@@ -1,9 +1,9 @@
-import { ApiResponse, InternalApiRequest } from '@bflint/tools-api'
+import { ApiResponse, FileSystemRequestBody, SimpleApiRequest } from '@bflint/tools-api'
 
 
 interface FileSystemInterop {
-  execute<BodyType, ResponseType, ErrorType>(
-      request: InternalApiRequest<BodyType | void, ErrorType>
+  execute<ResponseType, ErrorType>(
+      request: FileSystemRequestBody
     ): Promise<ApiResponse<ResponseType, ErrorType>>;
 
 }

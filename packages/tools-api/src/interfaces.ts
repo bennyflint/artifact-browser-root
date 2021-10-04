@@ -1,12 +1,21 @@
 export interface ApiRequest {
+  path: string;
   args: string[];
   requestInit(): RequestInit;
 }
 
-export interface InternalApiRequest<BodyType, ErrorType> {
+// This is a bad name; it's actually specific to a remote api request.
+export interface InternalApiRequest<BodyType, ErrorType> extends SimpleApiRequest<BodyType, ErrorType> {
   remoteUri: string;
   remoteMethod: string;
   remoteHeaders: Record<string, string>;
+}
+
+/**
+ * @param {string} path - The path the the node server endpoint.
+ */
+export interface SimpleApiRequest<BodyType, ErrorType> {
+  path: string,
   body?: BodyType | undefined;
   errorHandler?: ErrorHandler<ErrorType>;
   requestInit(): RequestInit;

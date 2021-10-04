@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { ApiError, ApiResponse, InternalApiRequest } from '@bflint/tools-api';
+import { ApiError, ApiResponse, FileSystemRequestBody, InternalApiRequest, SimpleApiRequest } from '@bflint/tools-api';
 import { RemoteInterop } from 'interfaces/remote.interface';
 import { RemoteServerRequest } from '../remote/remote-server-request';
 import FileSystemInterop from './filesystem.interface';
@@ -11,10 +11,10 @@ export class FileSystemController {
     this.interop = interop;
   }
 
-  send = async (req: InternalApiRequest<unknown, unknown>, res: Response): Promise<void> => {
+  send = async (req: SimpleApiRequest<FileSystemRequestBody, unknown>, res: Response): Promise<void> => {
     try {
       this.interop
-        .execute(req)
+        .execute(req.body)
         .then(remoteResponse => {
           if (remoteResponse.success === false) {
             res.status(502).send(remoteResponse);
@@ -35,7 +35,7 @@ export class FileSystemController {
 
   public exec = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const request: InternalApiRequest<unknown, unknown> = req.body;
+      const request: SimpleApiRequest<FileSystemRequestBody, unknown> = req.body;
       if (this.isRequestValid(request)) {
         this.send(request, res);
       } else {
@@ -53,7 +53,7 @@ export class FileSystemController {
     }
   };
 
-  private isRequestValid(request: InternalApiRequest<unknown, unknown>): boolean {
+  private isRequestValid(request: SimpleApiRequest<unknown, unknown>): boolean {
     // TODO This will be a very stupid validation because we don't (and should not) know
     // much about the requests we are proxying. We may be able to get rid of it.
     if (request) {

@@ -1,36 +1,34 @@
-import { ApiService } from "@bflint/tools-api"
+import { ApiService, SimpleApiRequest, FileSystemApiRequest, FileSystemCommandType, FileSystemRequestBody, ErrorHandler } from "@bflint/tools-api"
 
 export interface ArtifactSummary {
+    id: string,
+    name: string,
+    displayName: string,
+    org: string,
+    module: string,
     version: string,
+    integrationRevision: string,
+    classifier: string,
     created: string,
-    labels?: string[]
+    labels?: string[],
+    changes?: string,
+    notes?: string
 }
 
 export class ArtifactService {
 
     apiService: ApiService;
 
-    constructor(apiService: ApiService = new ApiService('localhost:4000')) {
+    constructor(apiService: ApiService = new ApiService('http://localhost:4000')) {
         this.apiService = apiService;
     }
 
-    fetchArtifacts(): ArtifactSummary[] {
-        return [
-            this.createData('rad-client.1.0.4.1200.debug', '2021-09-16T14:04', ['Broken']),
-            this.createData('rad-client.1.0.4.1200.release', '2021-09-16T14:03', ['Broken']),
-        ]
-    }
-
-    createData (
-        version: string,
-        created: string,
-        labels: string[]
-    ): ArtifactSummary {
-        return {
-            version,
-            created,
-            labels,
-        };
+    async fetchArtifacts(): Promise<ArtifactSummary[]> {
+        const req = FileSystemApiRequest.create({cwd: '../../../artifact-browser-db', cmd: FileSystemCommandType.LS_TREE})
+        return this.apiService.apiRequest<FileSystemRequestBody, ArtifactSummary[], string>(req)
+        .then(data => {
+            return data.response || [];
+        });
     }
 
 }

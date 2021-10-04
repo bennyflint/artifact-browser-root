@@ -1,18 +1,9 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+import { Box, Chip, Collapse, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextareaAutosize, TextField } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { ArtifactSummary } from 'artifact-browser/services/ArtifactService';
+import { Editable } from 'ui-component/Editable';
 
 function createData(
   name: string,
@@ -44,12 +35,18 @@ function createData(
   };
 }
 
+
 // Use a type alias here in case we ever want these types to diverge.
 type RowProps = ArtifactSummary
 
 function Row(props: { row: RowProps } ) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const [notes, setNotes] = React.useState(row.notes)
+  
+  const editNotes = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNotes(event.target.value);
+  };
 
   return (
     <React.Fragment>
@@ -64,29 +61,61 @@ function Row(props: { row: RowProps } ) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.version}
+          {row.displayName}
         </TableCell>
         <TableCell align="right">{row.created}</TableCell>
-        <TableCell align="right">{row.labels}</TableCell>
-        <TableCell align="right">Unused</TableCell>
-        <TableCell align="right">Unused</TableCell>
+        <TableCell align="right">
+        <Stack justifyContent="flex-end" direction="row" spacing={1}>{row.labels?.map((label) => {
+          return (
+              <Chip label={label} size="small" variant="outlined"/>
+          );})
+        }
+        </Stack>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                History
-              </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    <TableCell>Identifier</TableCell>
+                    <TableCell>Changes</TableCell>
+                    <TableCell>Notes</TableCell>
                   </TableRow>
                 </TableHead>
+                <TableBody>
+                  <TableRow key={row.id}>
+                    <TableCell component="th" scope="row">
+                      {row.id}
+                    </TableCell>
+                    <TableCell>{row.changes}</TableCell>
+                    <TableCell>
+                      <Editable
+                        text={notes}
+                        placeholder="Description for the task"
+                        type="textarea"
+                      >
+                        <Box
+                          component="form"
+                          sx={{
+                            '& .MuiTextField-root': { m: 1, width: '100%' },
+                          }}
+                          noValidate
+                          autoComplete="off"
+                        >
+                          <TextField
+                            id="outlined-multiline-static"
+                            multiline
+                            value={notes}
+                            onChange={editNotes}
+                          />
+                        </Box>
+                      </Editable>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
                 {/* <TableBody>
                   {row.history.map((historyRow) => (
                     <TableRow key={historyRow.date}>
@@ -110,14 +139,6 @@ function Row(props: { row: RowProps } ) {
   );
 }
 
-const theRows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
-
 interface ArtifactTableProps {
     rows: RowProps[]
 }
@@ -134,16 +155,14 @@ export const ArtifactTable = (
           <TableHead>
             <TableRow>
               <TableCell />
-              <TableCell>Version</TableCell>
+              <TableCell>Artifact</TableCell>
               <TableCell align="right">Created</TableCell>
               <TableCell align="right">Labels</TableCell>
-              <TableCell align="right">Empty</TableCell>
-              <TableCell align="right">Empty</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <Row key={row.version} row={row} />
+              <Row key={row.id} row={row} />
             ))}
           </TableBody>
         </Table>

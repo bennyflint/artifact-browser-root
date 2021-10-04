@@ -1,4 +1,4 @@
-import { ApiError, ApiRequest, ApiResponse, InternalApiRequest } from './interfaces';
+import { ApiError, ApiRequest, ApiResponse, InternalApiRequest, SimpleApiRequest } from './interfaces';
 import { CliApiRequest } from './CliApiRequest';
 import fetch from 'cross-fetch';
 
@@ -6,8 +6,6 @@ export class ApiService {
   GENERAL_ERROR = 'GENERAL_ERROR';
   JSON_PARSE_ERROR = 'JSON_PARSE_ERROR';
   UNABLE_TO_FULFILL_REQUEST = 'UNABLE_TO_FULFILL_REQUEST';
-  CLI_API_URI = '/api/cli';
-  REMOTE_API_URI = '/api/remote';
 
   baseUrl: string;
 
@@ -17,16 +15,15 @@ export class ApiService {
 
   async cliRequest<ResponseType>(...args: string[]): Promise<ApiResponse<ResponseType, never>> {
     const request: ApiRequest = new CliApiRequest(args);
-    return this.sendRequestInternal<ResponseType>(this.CLI_API_URI, request);
+    return this.sendRequestInternal<ResponseType>(request);
   }
 
   // TODO I would like to unify the way that cli and remote requests are handled.
   private async sendRequestInternal<ResponseType>(
-    path: string,
     request: ApiRequest,
   ): Promise<ApiResponse<ResponseType, never>> {
     return new Promise(resolve => {
-      fetch(this.baseUrl + path, request.requestInit())
+      fetch(this.baseUrl + request.path, request.requestInit())
         .then(res => {
           if (res.ok) {
             return res.json();
@@ -52,18 +49,23 @@ export class ApiService {
     });
   }
 
+  async apiRequest<BodyType, ResponseType, ErrorType>(
+    apiRequest: SimpleApiRequest<BodyType, ErrorType>
+  ): Promise<ApiResponse<ResponseType, ErrorType>> {
+    return this.sendRemoteRequest<BodyType, ResponseType, ErrorType>(apiRequest);
+  }
+
   async remoteRequest<BodyType, ResponseType, ErrorType>(
     apiRequest: InternalApiRequest<BodyType, ErrorType>,
   ): Promise<ApiResponse<ResponseType, ErrorType>> {
-    return this.sendRemoteRequest<BodyType, ResponseType, ErrorType>(this.REMOTE_API_URI, apiRequest);
+    return this.sendRemoteRequest<BodyType, ResponseType, ErrorType>(apiRequest);
   }
 
   private async sendRemoteRequest<BodyType, ResponseType, ErrorType>(
-    path: string,
-    request: InternalApiRequest<BodyType, ErrorType>,
+    request: SimpleApiRequest<BodyType, ErrorType>,
   ): Promise<ApiResponse<ResponseType, ErrorType>> {
     return new Promise(resolve => {
-      fetch(this.baseUrl + path, request.requestInit())
+      fetch(this.baseUrl + request.path, request.requestInit())
         .then(res => {
           if (res.ok) {
             return res.json();
