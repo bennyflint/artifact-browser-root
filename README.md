@@ -16,7 +16,7 @@ Three packages:
 5. Clone artifact DB as a sibling of project root. (https://github.com/bennyflint/artifact-browser-db)
 
 ### Front-End
-From project root, `artifact-browser-root/` run `npm -w artifact-browser start`. Should open a browser running app.
+From project root, `artifact-browser-root/` run `npm -w artifact-browser start`. Should open a browser running app. Click _Artifact Browser_ on left nav to access the app.
 
 ### Server
 In another terminal, run `npm -w @bflint/tools-server run dev`, also from project root.
