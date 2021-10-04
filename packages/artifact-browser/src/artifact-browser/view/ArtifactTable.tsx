@@ -9,6 +9,7 @@ import { Editable } from 'ui-component/Editable';
 // Use a type alias here in case we ever want these types to diverge.
 type RowProps = ArtifactSummary
 
+// Renders a row in the Artifact Table
 function Row(props: { row: RowProps } ) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
